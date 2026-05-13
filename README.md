@@ -27,7 +27,7 @@ git clone https://github.com/rodrigoaguerra/tecnofit.git
 ```
 ### 🔹 1.2 Navegar para pasta do projeto
 ```sh
-cd api-tecnofit
+cd tecnofit
 ```
 
 ### 🔹 1.3 Instalar Dependências
