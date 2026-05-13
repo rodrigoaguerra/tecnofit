@@ -1,0 +1,14 @@
+RewriteEngine On
+
+# Impede a listagem de diretórios por segurança
+Options -Indexes
+
+# Define a base para o redirecionamento
+RewriteBase /
+
+# Se o arquivo ou diretório solicitado não existir fisicamente...
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+
+# ...redireciona tudo para o index.php, preservando os parâmetros (QSA)
+RewriteRule ^(.*)$ index.php [QSA,L]

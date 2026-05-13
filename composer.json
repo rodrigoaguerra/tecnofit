@@ -1,0 +1,20 @@
+{
+    "name": "rodrigo/test-tecnofit",
+    "description": "Endpoint RESTful em PHP com retorno do ranking de um determinado movimento com base no banco de dados.",
+    "type": "project",
+    "authors": [
+        {
+            "name": "Rodrigo Alves Guerra",
+            "email": "orbital@rodrigoalvesguerra.com.br"
+        }
+    ],
+    "scripts": {
+        "start": "php -S localhost:8000 -t public",
+        "db:import": "php database/import.php"
+    },
+    "autoload": {
+        "psr-4": {
+            "App\\": "src/"
+        }
+    }
+}
