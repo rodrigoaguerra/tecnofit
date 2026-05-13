@@ -40,7 +40,7 @@ $uri = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
 $parts = array_values(array_filter(explode('/', $uri)));
 
 // Verifica se a URI corresponde ao formato esperado para ranking
-if (($parts[0] === 'ranking' && isset($parts[1])) || isset($_GET['id']) || isset($_GET['name'])) {
+if ((isset($parts[0]) && $parts[0] === 'ranking' && isset($parts[1])) || isset($_GET['id']) || isset($_GET['name'])) {
     // Permite tanto /ranking/{id_ou_nome} quanto /ranking?id={id_ou_nome}
     $uri_param = urldecode($parts[1] ?? $_GET['id'] ?? $_GET['name']); 
 
@@ -52,7 +52,6 @@ if (($parts[0] === 'ranking' && isset($parts[1])) || isset($_GET['id']) || isset
 } else {
     if ($uri === '/' || $uri === '') {
         // se a URI for raiz mostramos uma mensagem de boas-vindas e instruções de uso
-        http_response_code(200);
         echo json_encode([
             "api" => APP_NAME,
             "message" => "Bem-vindo à API de Movimentos! Use /ranking/{id_ou_nome} ou /ranking?id={id} ou /ranking?name={nome} para obter o ranking de um movimento específico."

@@ -85,9 +85,9 @@ A api estará disponível em: http://localhost:8000
 ## 📌 3. Funcionalidades
 - ✅ Buscar ranking de movimento por id ou nome
 
-## 📌 3. Créditos
+## 📌 4. Créditos
 Desenvolvido por **Rodrigo Alves Guerra 🖥️🚀**
 
-## 📌 4. Demo 
+## 📌 5. Demo 
   - [api em produção](https://api-tecnofit.rodrigoalvesguerra.com.br)
   - [front-end aplicação](https://tecnofit.rodrigoalvesguerra.com.br)
