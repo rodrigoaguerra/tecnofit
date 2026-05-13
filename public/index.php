@@ -35,20 +35,26 @@ if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
 }
 
 $uri = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
-$parts = explode('/', $uri);
+$parts = array_values(array_filter(explode('/', $uri)));
 
-/**
- * Exemplo de rota: 
- * GET /ranking/{id_ou_nome} ou 
- * GET /ranking?id={id} ou 
- * GET /ranking?name={nome}
- */
-if ($parts[1] === 'ranking' && isset($parts[2]) || isset($_GET['id']) || isset($_GET['name'])) {
-    $uri_param = urldecode($parts[2] ?? $_GET['id'] ?? $_GET['name']); // Permite tanto /ranking/{id_ou_nome} quanto /ranking?id={id_ou_nome}
+if (($parts[0] === 'ranking' && isset($parts[1])) || 
+    isset($_GET['id']) || 
+    isset($_GET['name'])
+) {
+    $uri_param = urldecode($parts[1] ?? $_GET['id'] ?? $_GET['name']); // Permite tanto /ranking/{id_ou_nome} quanto /ranking?id={id_ou_nome}
 
     $controller = Container::movementController();
 
-    echo $controller->getRanking($uri_param);
+    try {
+        echo $controller->getRanking($uri_param);
+    } catch (\InvalidArgumentException $e) {
+        http_response_code(400);
+        echo json_encode(["error" => $e->getMessage()], JSON_UNESCAPED_UNICODE);
+    } catch (\Throwable $e) {
+        http_response_code(500);
+        error_log($e->getMessage()); // loga internamente
+        echo json_encode(["error" => "Erro interno"], JSON_UNESCAPED_UNICODE); // não expõe detalhes
+    }
 } else {
     http_response_code(400);
     echo json_encode([ 

@@ -1,0 +1,11 @@
+RewriteEngine On
+Options -Indexes
+RewriteBase /
+
+# Redireciona a raiz para public/
+RewriteRule ^$ public/index.php [L]
+
+# Se não for um arquivo/diretório real, manda para public/index.php
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^(.*)$ public/index.php [QSA,L]
