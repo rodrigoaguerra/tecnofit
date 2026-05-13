@@ -34,6 +34,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
     exit;
 }
 
+// 🔍 Roteamento simples para tratar a URL
 $uri = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
 $parts = array_values(array_filter(explode('/', $uri)));
 
