@@ -88,4 +88,6 @@ A api estará disponível em: http://localhost:8000
 ## 📌 3. Créditos
 Desenvolvido por **Rodrigo Alves Guerra 🖥️🚀**
 
-## 📌 4. Demo [api em produção](https://tecnofit.rodrigoalvesguerra.com.br)
+## 📌 4. Demo 
+  - [api em produção](https://api-tecnofit.rodrigoalvesguerra.com.br)
+  - [front-end aplicação](https://tecnofit.rodrigoalvesguerra.com.br)

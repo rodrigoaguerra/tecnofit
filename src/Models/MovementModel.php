@@ -5,7 +5,7 @@ namespace App\Models;
 use PDO;
 
 class MovementModel {
-    private $db;
+    private PDO $db;
 
     public function __construct(PDO $db) {
         $this->db = $db;
@@ -13,10 +13,10 @@ class MovementModel {
 
     /**
      * Retorna o ranking de um movimento específico.
-     * * @param string|int $identifier ID ou Nome do movimento.
+     * @param string|int $identifier ID ou Nome do movimento.
      * @return array|false
      */
-    public function getRankingByIdentifier($identifier) {
+    public function getRankingByIdentifier(string | int $identifier) {
         $sql = "
             SELECT 
                 m.name AS movement_name,
@@ -34,7 +34,7 @@ class MovementModel {
 
         $stmt = $this->db->prepare($sql);
         
-        // Vinculamos o mesmo identificador para ambos os filtros (ID ou Nome)
+        // Mesmo identificador para ambos os filtros (ID ou Nome)
         $stmt->bindValue(':id', is_numeric($identifier) ? (int)$identifier : 0, PDO::PARAM_INT);
         $stmt->bindValue(':name', $identifier, PDO::PARAM_STR);
         

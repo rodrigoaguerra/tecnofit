@@ -28,7 +28,7 @@ if (!in_array($method, ['GET', 'OPTIONS'])) {
     exit;
 }
 
-// 🔒 Preflight
+// 🔒 Preflight 
 if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
     http_response_code(204);
     exit;
@@ -41,21 +41,16 @@ if (($parts[0] === 'ranking' && isset($parts[1])) ||
     isset($_GET['id']) || 
     isset($_GET['name'])
 ) {
-    $uri_param = urldecode($parts[1] ?? $_GET['id'] ?? $_GET['name']); // Permite tanto /ranking/{id_ou_nome} quanto /ranking?id={id_ou_nome}
+    // Permite tanto /ranking/{id_ou_nome} quanto /ranking?id={id_ou_nome}
+    $uri_param = urldecode($parts[1] ?? $_GET['id'] ?? $_GET['name']); 
 
+    // instancia o Controller por meio do Container para obter o ranking do movimento solicitado
     $controller = Container::movementController();
 
-    try {
-        echo $controller->getRanking($uri_param);
-    } catch (\InvalidArgumentException $e) {
-        http_response_code(400);
-        echo json_encode(["error" => $e->getMessage()], JSON_UNESCAPED_UNICODE);
-    } catch (\Throwable $e) {
-        http_response_code(500);
-        error_log($e->getMessage()); // loga internamente
-        echo json_encode(["error" => "Erro interno"], JSON_UNESCAPED_UNICODE); // não expõe detalhes
-    }
+    // chama o método do Controller para obter o ranking e exibe a resposta JSON formatada ou mensagem de erro
+    echo $controller->getRanking($uri_param);
 } else {
+    // Resposta para requisições sem o parâmetro necessário
     http_response_code(400);
     echo json_encode([ 
         "app" => APP_NAME, 
