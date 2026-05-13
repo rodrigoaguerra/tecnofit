@@ -23,7 +23,7 @@ Siga os passos abaixo para instalar e configurar a api.
 
 ### 🔹 1.1 Clonar o Repositório
 ```sh
-git clone https://github.com/rodrigoaguerra/api-tecnofit.git
+git clone https://github.com/rodrigoaguerra/tecnofit.git
 ```
 ### 🔹 1.2 Navegar para pasta do projeto
 ```sh
