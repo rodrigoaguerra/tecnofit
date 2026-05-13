@@ -17,6 +17,7 @@ header("Vary: Origin");
 header("Access-Control-Allow-Methods: GET, OPTIONS");
 header("Access-Control-Allow-Headers: Content-Type, Authorization");
 
+// 🔒 Metodos permitidos
 $method = $_SERVER['REQUEST_METHOD'];
 
 if (!in_array($method, ['GET', 'OPTIONS'])) {
@@ -34,7 +35,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
     exit;
 }
 
-// 🔍 Roteamento simples para tratar a URL
+// 🔍 Roteamento simples para tratar a URI
 $uri = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
 $parts = array_values(array_filter(explode('/', $uri)));
 
