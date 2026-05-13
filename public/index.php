@@ -50,17 +50,18 @@ if (($parts[0] === 'ranking' && isset($parts[1])) || isset($_GET['id']) || isset
     // chama o método do Controller para obter o ranking e exibe a resposta JSON formatada ou mensagem de erro
     echo $controller->getRanking($uri_param);
 } else {
-    // se a URI for raiz mostramos uma mensagem de boas-vindas e instruções de uso
     if ($uri === '/' || $uri === '') {
+        // se a URI for raiz mostramos uma mensagem de boas-vindas e instruções de uso
+        http_response_code(200);
         echo json_encode([
-            "app" => APP_NAME,
+            "api" => APP_NAME,
             "message" => "Bem-vindo à API de Movimentos! Use /ranking/{id_ou_nome} ou /ranking?id={id} ou /ranking?name={nome} para obter o ranking de um movimento específico."
         ], JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE);
     } else {
         // se a URI não corresponder ao formato esperado, retorna um erro de parâmetro inválido com instruções de uso
         http_response_code(400);
         echo json_encode([ 
-            "app" => APP_NAME, 
+            "api" => APP_NAME, 
             "error" => "Parâmetro inválido",
             "usage" => "Use /ranking/{id_ou_nome} ou /ranking?id={id} ou /ranking?name={nome} para obter o ranking de um movimento específico"
           ], 
