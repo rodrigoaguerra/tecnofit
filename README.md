@@ -4,10 +4,11 @@ Este projeto consiste em uma API RESTful desenvolvida em PHP puro, utilizando PD
 
 A aplicação tem como objetivo fornecer o ranking de um determinado movimento com base nos dados armazenados no banco, retornando as informações em formato JSON.
 
-## 🔗 Endpoint's disponível
-- GET /ranking/{id_ou_nome}
-- GET /ranking?id={id}
-- GET /ranking?name={nome}
+## 🔗 Endpoint's disponíveis
+- GET /ranking/{id}?page={pagina}&limit={numero_de_linhas}
+- GET /ranking?id={id}&?page={pagina}&limit={numero_de_linhas}
+- GET /ranking/{nome_do_movimento}?page={pagina}&limit={numero_de_linhas}
+- GET /ranking?name={nome_do_movimento}&?page={pagina}&limit={numero_de_linhas}
 
 Retorna o ranking de um movimento específico, podendo ser consultado pelo ID ou nome.
 
