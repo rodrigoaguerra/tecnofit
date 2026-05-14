@@ -16,33 +16,32 @@ $page = isset($_GET['page']) ? (int)$_GET['page'] : 1; // número da página, pa
 $limit = isset($_GET['limit']) ? (int)$_GET['limit'] : 10; // registros por página
 
 // Funções handlers para cada rota
-function handleRanking($method, $resource, $controller) {
+function handleRanking(string $method, string $resource): string {
+    // Instancia o Controller
+    $controller = Container::movementController();
+
     if ($method !== 'GET') {
         http_response_code(405);
-        echo json_encode(["error" => "Método não permitido para ranking"], JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE);
-        return;
+        return json_encode(["error" => "Método não permitido para ranking"], JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE);
+        
     }
 
     $identifier = $resource ?? ($_GET['id'] ?? $_GET['name'] ?? null);
     if (!$identifier) {
         http_response_code(400);
-        echo json_encode(["error" => "Identificador do movimento é obrigatório"], JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE);
-        return;
+        return json_encode(["error" => "Identificador do movimento é obrigatório"], JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE);
     }
 
     $page = isset($_GET['page']) ? max(1, (int)$_GET['page']) : 1;
     $limit = isset($_GET['limit']) ? max(1, min(100, (int)$_GET['limit'])) : 10;
-
-    echo $controller->getRanking($identifier, $page, $limit);
+    
+    return $controller->getRanking($identifier, $page, $limit);
 }
-
-// Instancia o Controller
-$movementController = Container::movementController();
 
 // Roteamento baseado na rota e método
 switch ($route) {
     case 'ranking':
-        handleRanking($method, urldecode($parms ?? $query), $movementController);
+        echo handleRanking($method, urldecode($parms ?? $query ?? ''));
         break;
 
     default:

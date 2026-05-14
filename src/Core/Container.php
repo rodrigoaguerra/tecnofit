@@ -12,7 +12,7 @@ class Container {
     * Ele gerencia a criação da conexão com o banco de dados e a injeção da dependência da Model no Controller.
     * @return MovementController
     */
-    public static function movementController() {
+    public static function movementController(): MovementController {
         $connection = Connection::get();
         
         $model = new MovementModel($connection);
