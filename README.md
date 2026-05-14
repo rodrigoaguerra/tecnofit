@@ -46,6 +46,8 @@ cp config-example.php config.php
 // Configurações da aplicação
 define( 'APP_NAME', 'NOME_DA_APLICAÇÃO' );
 define( 'APP_ENV', 'development' );
+define( 'METHODS_ALLOWED', ['GET', 'OPTIONS'] ); // Métodos HTTP permitidos ex: 'PUT', 'PATCH', 'DELETE'
+
 define( 'ALLOWED_ORIGINS', [
   'http://localhost:8000',
   'http://localhost:8080', 
@@ -76,17 +78,18 @@ php -S localhost:8000 -t public
 ```
 A api estará disponível em: http://localhost:8000
 
-## 📌 2. Testar o endpoint da api, exemplos de uso:
-  - GET http://localhost:8000/ranking/1
-  - GET http://localhost:8000/ranking/Back Squat
-  - GET http://localhost:8000/ranking?id=2
-  - GET http://localhost:8000/ranking?name=Deadlift
+## 📌 2. Testar o endpoint da api
+exemplos de uso:
+  - GET http://localhost:8000/ranking/1?page=1&limit=10
+  - GET http://localhost:8000/ranking?id=2&page=1&limit=10
+  - GET http://localhost:8000/ranking/Deadlift?page=1&limit=10"
+  - GET http://localhost:8000/ranking?name=Deadlift&page=1&limit=10
 
 ## 📌 3. Funcionalidades
 - ✅ Buscar ranking de movimento por id ou nome
 
 ## 📌 4. Créditos
-Desenvolvido por **Rodrigo Alves Guerra 🖥️🚀**
+Desenvolvido por [**Rodrigo Alves Guerra 🖥️🚀**](https://rodrigoalvesguerra.com.br)
 
 ## 📌 5. Demo 
   - [api em produção](https://api-tecnofit.rodrigoalvesguerra.com.br)

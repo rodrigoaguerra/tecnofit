@@ -2,6 +2,8 @@
 // constantes de configuração da aplicação
 define( 'APP_NAME', 'NOME_DA_APLICAÇÃO' ); // Nome da aplicação
 define( 'APP_ENV', 'development' ); // Mudat para 'production' em ambiente de produção
+define( 'METHODS_ALLOWED', ['GET', 'OPTIONS'] ); // Métodos HTTP permitidos ex: 'PUT', 'PATCH', 'DELETE'
+
 define( 'ALLOWED_ORIGINS', [ // Adicionar origens permitidas para CORS
     'http://localhost:8000',
     'http://localhost:8080', // Exemplo de frontend de origens adicionais permitidas
