@@ -29,8 +29,8 @@ if (!in_array($method, ['GET', 'OPTIONS'])) {
     exit;
 }
 
-// 🔒 Preflight 
-if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
+// 🔒 Preflight para requisições front-end 
+if ($method === 'OPTIONS') {
     http_response_code(204);
     exit;
 }
@@ -39,16 +39,31 @@ if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
 $uri = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
 $parts = array_values(array_filter(explode('/', $uri)));
 
+$route = $parts[0] ?? '';  // Ex: 'ranking'
+$parms = $parts[1] ?? null; // Permite pegar o ID ou Nome diretamente da URI, ex: /ranking/1 ou /ranking/squat
+$query = $_GET['id'] ?? $_GET['name'] ?? null; // Permite tanto ?id= quanto ?name= para flexibilidade
+$page = isset($_GET['page']) ? (int)$_GET['page'] : 1; // número da página, padrão 1
+$limit = isset($_GET['limit']) ? (int)$_GET['limit'] : 10; // registros por página
+
 // Verifica se a URI corresponde ao formato esperado para ranking
-if ((isset($parts[0]) && $parts[0] === 'ranking' && isset($parts[1])) || isset($_GET['id']) || isset($_GET['name'])) {
+if (($route === 'ranking' && $parms) || ($route === 'ranking' && $query)) {
     // Permite tanto /ranking/{id_ou_nome} quanto /ranking?id={id_ou_nome}
-    $uri_param = urldecode($parts[1] ?? $_GET['id'] ?? $_GET['name']); 
+    $uri_param = urldecode($parms ?? $query); 
+    $page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
+    $limit = isset($_GET['limit']) ? (int)$_GET['limit'] : 10; // registros por página
 
     // instancia o Controller por meio do Container para obter o ranking do movimento solicitado
     $controller = Container::movementController();
 
-    // chama o método do Controller para obter o ranking e exibe a resposta JSON formatada ou mensagem de erro
-    echo $controller->getRanking($uri_param);
+    switch ($method) {
+        case 'GET':
+            // chama o método do Controller para obter o ranking e exibe a resposta JSON formatada ou mensagem de erro
+            echo $controller->getRanking($uri_param, $page, $limit);
+            break;
+        default:
+            http_response_code(405);
+            echo json_encode(["error" => "Método não permitido"], JSON_UNESCAPED_UNICODE);
+    }
 } else {
     if ($uri === '/' || $uri === '') {
         // se a URI for raiz mostramos uma mensagem de boas-vindas e instruções de uso

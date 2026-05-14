@@ -16,15 +16,24 @@ class MovementController {
      * @param string $identifier ID ou Nome do movimento.
      * @return string JSON formatado ou mensagem de erro.
      */
-    public function getRanking(string $identifier) {
+    public function getRanking(string $identifier, int $page = 1, int $limit = 10): string {
         try {
-            // O Controller apenas pede os dados para a Model
-            $data = $this->model->getRankingByIdentifier($identifier);
+            // Método adicional para contar total de registros
+            $total = $this->model->getTotalRankingCount($identifier); 
+            $total_pages = ceil($total / $limit);
+            
+            if($page < 1 || $page > $total_pages) {
+                throw new \InvalidArgumentException("Página inválida");
+            }
 
+            // O Controller apenas pede os dados para a Model
+            $data = $this->model->getRankingByIdentifier($identifier, $page, $limit);
+            
+            
             // O Controller verifica se o ranking foi encontrado
             if (!$data) {
                 http_response_code(404);
-                return json_encode(["error" => "Ranking não encontrado"], JSON_UNESCAPED_UNICODE);
+                return json_encode(["error" => "Movimento não encontrado"], JSON_UNESCAPED_UNICODE);
             }
 
             // O Controller formata a resposta final conforme os requisitos
@@ -37,18 +46,24 @@ class MovementController {
                         "posicao" => (int)$row['ranking_position'],
                         "data" => $row['record_date']
                     ];
-                }, $data)
+                }, $data),
+                "pagination" => [
+                    'current_page' => $page,
+                    'total_pages' => $total_pages,
+                    'total_records' => $total,
+                    'per_page' => $limit
+                ]
             ], JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE);
 
-        }  catch (\InvalidArgumentException $e) {
+        } catch (\InvalidArgumentException $e) {
             // Tratamento de erro
             http_response_code(400);
-            echo json_encode(["error" => $e->getMessage()], JSON_UNESCAPED_UNICODE);
+            return json_encode(["error" => $e->getMessage()], JSON_UNESCAPED_UNICODE);
         } catch (\Throwable $e) {
             // Tratamento de erro 
             http_response_code(500);
             error_log($e->getMessage()); // loga internamente
-            echo json_encode(["error" => "Erro interno"], JSON_UNESCAPED_UNICODE); // não expõe detalhes
+            return json_encode(["error" => "Erro interno"], JSON_UNESCAPED_UNICODE); // não expõe detalhes
         }
     }
 }

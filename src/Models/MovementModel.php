@@ -14,9 +14,11 @@ class MovementModel {
     /**
      * Retorna o ranking de um movimento específico.
      * @param string|int $identifier ID ou Nome do movimento.
+     * @param int $page Número da página (começa em 1)
+     * @param int $limit Quantidade de resultados por página
      * @return array|false
      */
-    public function getRankingByIdentifier(string | int $identifier) {
+    public function getRankingByIdentifier(string | int $identifier, int $page = 1, int $limit = 10) {
         $sql = "
             -- CTE para calcular o ranking e pegar o recorde mais recente de cada usuário
             WITH ranking AS (
@@ -52,6 +54,7 @@ class MovementModel {
                 ) AS record_date
             FROM ranking r
             ORDER BY r.personal_record DESC
+            LIMIT :limit OFFSET :offset
         ";
 
         $stmt = $this->db->prepare($sql);
@@ -59,9 +62,33 @@ class MovementModel {
         // Mesmo identificador para ambos os filtros (ID ou Nome)
         $stmt->bindValue(':id', is_numeric($identifier) ? (int)$identifier : 0, PDO::PARAM_INT);
         $stmt->bindValue(':name', $identifier, PDO::PARAM_STR);
+        $stmt->bindValue(':limit', $limit, PDO::PARAM_INT);
+        $stmt->bindValue(':offset', ($page - 1) * $limit, PDO::PARAM_INT);
         
         $stmt->execute();
         
         return $stmt->fetchAll();
+    }
+
+    /**
+     * Retorna o total de registros para paginação
+     * @param string|int $identifier ID ou Nome do movimento
+     * @return int
+     */
+    public function getTotalRankingCount(string | int $identifier): int {
+        $sql = "
+            SELECT COUNT(DISTINCT u.id) as total
+            FROM personal_record pr
+            JOIN user u ON pr.user_id = u.id
+            JOIN movement m ON pr.movement_id = m.id
+            WHERE m.id = :id OR m.name = :name
+        ";
+
+        $stmt = $this->db->prepare($sql);
+        $stmt->bindValue(':id', is_numeric($identifier) ? (int)$identifier : 0, PDO::PARAM_INT);
+        $stmt->bindValue(':name', $identifier, PDO::PARAM_STR);
+        $stmt->execute();
+        
+        return (int) $stmt->fetch(PDO::FETCH_ASSOC)['total'];
     }
 }
