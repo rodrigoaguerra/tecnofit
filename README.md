@@ -82,7 +82,7 @@ A api estará disponível em: http://localhost:8000
 exemplos de uso:
   - GET http://localhost:8000/ranking/1?page=1&limit=10
   - GET http://localhost:8000/ranking?id=2&page=1&limit=10
-  - GET http://localhost:8000/ranking/Deadlift?page=1&limit=10"
+  - GET http://localhost:8000/ranking/Deadlift?page=1&limit=10
   - GET http://localhost:8000/ranking?name=Deadlift&page=1&limit=10
 
 ## 📌 3. Funcionalidades
