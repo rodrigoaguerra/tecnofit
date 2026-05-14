@@ -10,7 +10,11 @@
     ],
     "scripts": {
         "start": "php -S localhost:8000 -t public",
+        "test": "vendor/bin/phpunit",
         "db:import": "php database/import.php"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^10.0"
     },
     "autoload": {
         "psr-4": {

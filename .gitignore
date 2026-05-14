@@ -1,2 +1,4 @@
 /vendor/
 config.php
+.phpunit.cache
+phpunit.xml.dist
